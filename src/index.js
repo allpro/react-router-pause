@@ -134,9 +134,10 @@ class ReactRouterPause extends React.Component {
 			resume: this.resumeNavigation,
 			cancel: this.cancelNavigation,
 
+			// TODO: Decide whether to include this - probably not needed
 			// Unblock is only useful if followed by a navigation command
 			// Otherwise would be re-enabled when component renders again
-			unblock: this.unsubscribeBlocking,
+			// unblock: this.unsubscribeBlocking,
 
 			// Include basic history methods; for manual navigation
 			push: path => history.push(path, doNotBlock),

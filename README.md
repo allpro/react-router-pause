@@ -12,11 +12,28 @@
 
 -   NPM: `npm install @allpro/react-router-pause`
 -   Yarn: `yarn add @allpro/react-router-pause`
--   CDN: Exposed global is `ReactRouterPause`
+-   CDN: Exposed global is `Pause`
     -   Unpkg: `<script src="https://unpkg.com/@allpro/react-router-pause/umd/@allpro/react-router-pause.min.js"></script>`
     -   JSDelivr: `<script src="https://cdn.jsdelivr.net/npm/@allpro/react-router-pause/umd/@allpro/react-router-pause.min.js"></script>`
 
 ---
+
+
+## API
+
+### init
+
+### destroy
+
+### subscribeBlocking
+
+### unsubscribeBlocking
+
+### isNavigationDelayed
+
+### resumeNavigation
+
+### cancelNavigation
 
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@allpro/react-router-pause",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Helper that provides asynchronous pausing of React Router.",
   "license": "MIT",
   "author": "Kevin Dalman",
@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@allpro/form-manager": "^0.4.2",
-    "@allpro/react-router": "^0.6.0",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "babel-eslint": "^10.0.1",

@@ -12,4 +12,4 @@ function ReactRouterPauseDemo() {
 	)
 }
 
-render(<ReactRouterPauseDemo />, document.querySelector('#demo'))
+render(<ReactRouterPauseDemo />, document.querySelector('body'))

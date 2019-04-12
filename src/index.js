@@ -2,11 +2,13 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
+import assign from 'lodash/assign'
 import bindAll from 'lodash/bindAll'
 import isBoolean from 'lodash/isBoolean'
 import isFunction from 'lodash/isFunction'
 import isNull from 'lodash/isNull'
 import isObjectLike from 'lodash/isObjectLike'
+import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
 
@@ -122,11 +124,11 @@ class ReactRouterPause extends React.Component {
 		const { location, action } = route
 		const { use, when, history } = this.props
 
-		// State-flag to prevent beforeRouteChange from blocking route change
-		const doNotBlock = { doNotBlock: true }
-
 		// If props.when == false, means IGNORE route blocking even if set
 		if (when === false) return true
+
+		// State-flag to prevent beforeRouteChange from blocking route change
+		const mergeState = state => assign({}, state, { doNotBlock: true })
 
 		// Handler will be passed an API so can resume, clear, etc
 		const api = {
@@ -140,8 +142,8 @@ class ReactRouterPause extends React.Component {
 			// unblock: this.unsubscribeBlocking,
 
 			// Include basic history methods; for manual navigation
-			push: path => history.push(path, doNotBlock),
-			replace: path => history.replace(path, doNotBlock)
+			push: (path, state) => history.push(path, mergeState(state)),
+			replace: (path, state) => history.replace(path, mergeState(state))
 		}
 
 		let resp = true
@@ -151,6 +153,11 @@ class ReactRouterPause extends React.Component {
 			resp = use(api, location, action)
 		}
 		catch (err) {} // eslint-disable-line
+
+		// If nothing is returned, let navigation proceed as normal
+		if (isUndefined(resp)) {
+			return true
+		}
 
 		// A boolean response means allow or cancel - NO paused navigation
 		if (isBoolean(resp)) {

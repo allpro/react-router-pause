@@ -77,11 +77,11 @@ function Form( props ) {
 		return form.validateAll()
 	}
 
-	function handleNavigationAttempt(api, location) {
-		const callback = (fn, arg) => {
+	function handleNavigationAttempt(navigation, location) {
+		const closeThen = (fn, arg) => {
 			return () => {
-				fn(arg)
 				setDialogProps({})
+				fn(arg)
 			}
 		}
 
@@ -91,7 +91,7 @@ function Form( props ) {
 			// If data OK, continue; else form is ALREADY displaying errors
 			.then(isValid => {
 				if (isValid) {
-					api.resume()
+					navigation.resume()
 				}
 				else {
 					setNotificationProps({
@@ -111,10 +111,10 @@ function Form( props ) {
 			// If not the submit button, then prompt user with options
 			setDialogProps({
 				open: true,
-				cancel: callback(api.cancel),
-				resume: callback(api.resume),
-				redirect: callback(api.push, '/page4'),
-				onClose: callback(noop)
+				cancel: closeThen(navigation.cancel),
+				resume: closeThen(navigation.resume),
+				redirect: closeThen(navigation.push, '/page4'),
+				onClose: closeThen(noop)
 			})
 		}
 

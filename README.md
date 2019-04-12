@@ -334,8 +334,8 @@ class myFormComponent extends React.Component {
 
 If you pull the repo, you can run a demo with `npm start`.
 
-I'll also put the demo on CodeSandbox soon.
-<br>Check back to get the URL here!
+Or on CodeSandbox at:
+https://codesandbox.io/s/github/allpro/react-router-pause/tree/master/demo/src
 
 ## Contributing
 

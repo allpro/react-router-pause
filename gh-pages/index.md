@@ -12,7 +12,7 @@
 [React-Router-Pause](https://www.npmjs.com/package/@allpro/react-router-pause) 
 (**"RRP"**) is a Javascript utility for React Router v4 & v5.
 It provides a simple way to _asynchronously_ delay (pause) 
-router navigation events triggered by the user actions.
+router navigation events triggered by the user.
 For example, if a user clicks a link while in the middle of a process,
 and they will _lose data_ if navigation continues.
 
@@ -56,8 +56,8 @@ However this is clumsy and allows only a single, global configuration.
 -   NPM: `npm install @allpro/react-router-pause`
 -   Yarn: `yarn add @allpro/react-router-pause`
 -   CDN: Exposed global is `ReactRouterPause`
-    -   Unpkg: `<script src="https://unpkg.com/@allpro/react-router-pause/umd/@allpro/react-router-pause.min.js"></script>`
-    -   JSDelivr: `<script src="https://cdn.jsdelivr.net/npm/@allpro/react-router-pause/umd/@allpro/react-router-pause.min.js"></script>`
+    -   Unpkg: `<script src="https://unpkg.com/@allpro/react-router-pause/dist/umd/@allpro/react-router-pause.min.js"></script>`
+    -   JSDelivr: `<script src="https://cdn.jsdelivr.net/npm/@allpro/react-router-pause/dist/umd/@allpro/react-router-pause.min.js"></script>`
 
 
 ## Usage
@@ -80,7 +80,7 @@ A handler function could looks something like this:
 ```javascript
 function handleNavigationAttempt( navigation, location, action ) {
 	// Call an async function that returns a promise; wait for it to resolve...
-	preloadNextPage( location )
+	preloadNextPage( location.pathname )
 	    .then( navigation.resume ) // CONTINUE with navigation event
 	    .catch(error => {
 	    	navigation.cancel()    // CLEAR the navigation data (optional)
@@ -95,16 +95,16 @@ function handleNavigationAttempt( navigation, location, action ) {
 
 The RRP component accepts two props:
 
-- #### `use` `{function}` `[null]` _`required`_
+- #### `use` `{function} [null]` _required_
 
   Called each time a router navigation event occurs.
   See 'Event Handler' details below.
 
-- #### `when` `{boolean}` `[true]` _`optional`_
+- #### `when` `{boolean} [true]` _optional_
 
   Set `when={false}` to disable the RRP component.
   This is an alternative to using conditional rendering.
-  <br>_(Works same as Prompt component `when` prop.)_
+  (Identical to Prompt component 'when' prop.)
 
 
 ### Event Handler
@@ -116,7 +116,7 @@ Three arguments are passed when the handler is called:
 - #### `navigation` `{object}`
 
   The methods in this object provide control of the RRP component.
-  See 'RRP Object/Methods' below for details.
+  <br>See **Methods of 'navigation' Object** below for details.
   
 - #### `location` `{object}`
 
@@ -130,7 +130,7 @@ Three arguments are passed when the handler is called:
   <br>One of `PUSH`, `REPLACE`, or `POP` 
   
   
-#### `navigation` Object/Methods
+#### Methods of 'navigation' Object
 
 The `navigation` object passed to the handler function provides 5 methods:
 
@@ -143,22 +143,25 @@ The `navigation` object passed to the handler function provides 5 methods:
 - **navigation.replace(** path, state **)** - The `router.history.replace()` method,
     in case you wish to redirect a user to an alternate location
 
-**NOTE: It is not _necessary_ to call `navigation.clear()`.** 
-<br>Each new navigation event will _replace_ the previous one. 
-This means `navigation.resume()` can only trigger the **_last location_** 
+**NOTE: It is _not necessary_ to call `navigation.clear()`.** 
+<br>Each new navigation event _replaces_ the previous one, 
+therefore `navigation.resume()` will always go to **_ the last location_** 
 clicked by the user. 
-However, calling `navigation.cancel()` does make `navigation.isPaused()` more useful.
+Calling `navigation.cancel()` is useful if you use the
+`navigation.isPaused()` method, as 'cancel' makes isPaused = false.
 
-#### Handler Return Values
+#### Navigation Handler Return Values
 
-When called, the handler must return one of 5 values, (synchronously), 
-back to the RRP component. These are:
+When called, the handler set in `use` must return one of 5 values
+to the RRP component. These are:
 
 - **`true`** or **`undefined`** - Allow navigation to continue.
 - **`false`** - Cancel the navigation event, permanently.
 - **`null`** - Pause navigation so can _optionally_ be resumed later.
-- **`Promise`** - Pause until promise is settled, 
-    then resume if promise resolves, or cancel if rejected.
+- **`Promise`** - Pause navigation until promise is settled, then:
+  - If promise is _rejected_, **cancel** navigation
+  - If promise _resolves_ with a value of `false`, **cancel** navigation
+  - If promise _resolves_ with any other value, **resume** navigation
 
 This example pauses navigation, then resumes after 10 seconds.
 
@@ -169,26 +172,33 @@ function handleNavigationAttempt( navigation, location, action ) {
 }
 ````
 
-This example returns a promise. Navigation is paused while validating
-data asynchronously. A message is displayed during this time.
-When the promise resolves, navigation will resume automatically.
-If the promise is rejected, the navigation event is cancelled.
+This example returns a promise to pause navigation while validating
+data asynchronously. If the promise **resolves**,
+navigation will resume _unless_ `false` is returned by promise.
+If the promise **rejects**, navigation is cancelled.
 
 ```javascript
 function handleNavigationAttempt( navigation, location, action ) {
-	displayProcessingMessage()
-
 	return verifySomething(data)
 	    .then(isValid => {
 	    	if (!isValid) {
-	    		hideProcessingMessage()
 	    		showErrorMessage()
-	    		return Promise.reject() // Cancel Navigation Event
+	    		return false // Cancel Navigation
 	    	}
-	    	// If not rejected, navigation will now Resume
+	    	// Navigation resumes if 'false' not returned, and not 'rejected'
 	    })
 }
 ````
+
+
+# Same-Location Blocking
+
+RRP _automatically_ blocks navigation if the new location is the same as the
+current location. This prevents scenarios where React Router _reloads_ a form 
+when the user clicks the same page-link again.
+
+The comparison includes all parts of the location, including any 'state' passed, 
+so it will _not_ block if the new route is not identical in every way.
 
 
 ## Implementation
@@ -228,7 +238,6 @@ function myFormComponent( props ) {
             handleLeave: () => { closeDialog(); navigation.resume() },
             handleHelp: () => { closeDialog(); navigation.push('/form-help') }
         })
-        
         // Return null to 'pause' and save the route so can 'resume'
         return null
     }
@@ -276,7 +285,6 @@ class myFormComponent extends React.Component {
     handleNavigationAttempt( navigation, location, action ) {
         this.navigation = navigation
         this.setState({ showDialog: true })
-
         // Return null to 'pause' and save the route so can 'resume'
         return null
     }
@@ -286,22 +294,20 @@ class myFormComponent extends React.Component {
     }
     
     handleStay() {
-        // NOTE: It's not necessary to 'cancel' paused navigation
-        // Deletes the cached navigation data so can no longer be resumed
-        this.navigation.cancel()
         this.closeDialog()
+        this.navigation.cancel()
+        // NOTE: It's not necessary to 'cancel' paused navigation
+        // It just deletes the cached location so cannot be accidentally resumed
     }
     
     handleLeave() {
-        // Navigate to whatever destination the user clicked
-        this.navigation.resume()
         this.closeDialog()
+        this.navigation.resume()
    }
     
     handleShowHelp() {
-        // NOTE: It's not necessary to 'cancel' paused navigation
-        this.navigation.push('/form-help')
         this.closeDialog()
+        this.navigation.push('/form-help')
     }
 
     render() {
@@ -332,10 +338,17 @@ class myFormComponent extends React.Component {
 
 ## Live Demo
 
-If you pull the repo, you can run a demo with `npm start`.
+If you pull the repo, you can run the demo with `npm start`.
 
 Or on CodeSandbox at:
-https://codesandbox.io/s/github/allpro/react-router-pause/tree/master/demo/src
+https://codesandbox.io/s/github/allpro/react-router-pause/tree/master/example/src
+
+
+## Built With
+
+- [create-react-library](https://github.com/DimiMikadze/create-react-library) - 
+A React component framework based on
+[create-react-app](https://github.com/facebook/create-react-app)
 
 ## Contributing
 

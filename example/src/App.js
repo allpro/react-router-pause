@@ -73,11 +73,11 @@ const { object, string } = PropTypes
 
 ListNavItem.propTypes = {
 	to: string,
-	label: string,
+	label: string
 }
 
 
-function ReactRouterPauseDemo( props ) {
+function ReactRouterPauseDemo(props) {
 	const { classes } = props
 
 	return (

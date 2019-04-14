@@ -1,59 +1,74 @@
 {
-  "name": "@allpro/react-router-pause",
-  "version": "0.6.5",
-  "description": "Helper that provides asynchronous pausing of React Router.",
+  "name": "react-router-pause",
+  "version": "0.7.0",
+  "description": "Helper for React Router to provide customizable asynchronous navigation blocking",
+  "author": "allpro",
+  "repository": "allpro/react-router-pause",
   "license": "MIT",
-  "author": "Kevin Dalman",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/allpro/react-router-pause.git"
-  },
-  "homepage": "https://github.com/allpro/react-router-pause#readme",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
-  "react-native": "es/index.js",
-  "umd:main": "umd/@allpro/react-router-pause.min.js",
+  "main": "dist/cjs/react-router-pause.js",
+  "module": "dist/esm/react-router-pause.js",
+  "jsnext:main": "dist/esm/react-router-pause.js",
+  "react-native": "dist/umd/react-router-pause.js",
+  "umd:main": "dist/umd/react-router-pause.js",
   "files": [
-    "css",
-    "es",
-    "lib",
-    "umd"
+    "src",
+    "dist"
   ],
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
   "scripts": {
-    "build": "nwb build-react-component",
-    "clean": "nwb clean-module && nwb clean-demo",
-    "prepublishOnly": "npm run build",
-    "start": "nwb serve-react-demo",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server"
+    "test": "cross-env CI=1 react-scripts test",
+    "test:watch": "react-scripts test --env=jsdom",
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "prepare": "npm run build",
+    "predeploy": "cd example && npm install && npm run build",
+    "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
-    "react-router-dom": ">=4.0.0"
-  },
-  "dependencies": {
-    "lodash": "^4.0.0"
+    "prop-types": "^15.5.4",
+    "react": "^15.0.0 || ^16.0.0",
+    "react-dom": "^15.0.0 || ^16.0.0",
+    "react-router": "^4.0.0 || ^5.0.0",
+    "react-router-dom": "^4.0.0 || ^5.0.0"
   },
   "devDependencies": {
     "@allpro/form-manager": "^0.4.2",
-    "@material-ui/core": "^3.9.3",
-    "@material-ui/icons": "^3.0.2",
-    "babel-eslint": "^10.0.1",
+    "@material-ui/core": "^3.9.0",
+    "@material-ui/icons": "^3.0.0",
+    "@svgr/rollup": "^4.2.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^9.0.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "classnames": "^2.2.6",
-    "eslint": "^5.15.3",
-    "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-react": "^7.12.4",
-    "karma-chrome-launcher": "^2.2.0",
-    "nwb": "~0.23.0",
-    "prop-types": "^15.7.2",
-    "puppeteer": "^1.13.0",
-    "react": "^16.8.5",
-    "react-dom": "^16.8.5",
-    "react-router-dom": "^5.0.0"
-  },
-  "keywords": [
-    "react-router block pause async"
-  ]
+    "cross-env": "^5.1.4",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-react": "^7.10.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "gh-pages": "^1.2.0",
+    "jest-dom": "^3.1.3",
+    "lodash": "^4.0.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "^2.1.8",
+    "react-testing-library": "^6.1.2",
+    "rollup": "^1.10.0",
+    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-size-snapshot": "^0.8.0",
+    "rollup-plugin-terser": "^4.0.4",
+    "rollup-plugin-url": "^2.2.1"
+  }
 }

@@ -1,0 +1,80 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "import",
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "version": "15"
+    }
+  },
+  "env": {
+    "es6": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "globals": {
+    "__DEV__": true,
+    "console": true
+  },
+  "extends": [
+    // https://github.com/eslint/eslint/blob/master/conf/eslint-recommended.js
+    "eslint:recommended",
+    // https://www.npmjs.com/package/eslint-plugin-react#recommended
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "rules": {
+    "capitalized-comments": [
+      "error",
+      "always",
+      {
+        "line": {
+          "ignorePattern": ".",
+          "ignoreConsecutiveComments": true
+        },
+        "block": {
+          "ignoreInlineComments": true,
+          "ignorePattern": "ignored"
+        }
+      }
+    ],
+    "no-alert": "error",
+    "no-caller": "error",
+    "no-console": 0,
+    "no-invalid-this": "error",
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+    "no-param-reassign": "error",
+    "no-shadow": "error",
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true
+      }
+    ],
+    "no-useless-return": "error",
+    "no-with": "error",
+    "prefer-arrow-callback": "warn",
+    // don't force es6 functions to include space before paren
+    "space-before-function-paren": 0,
+
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always-and-inside-groups"
+      }
+    ],
+    // DO NOT force a specific number of newlines after imports
+    "import/newline-after-import": 0,
+
+    "react/display-name": 0,
+    "react/no-children-prop": 0,
+    "react/prop-types": 0,
+    // allow specifying true explicitly for boolean props?
+    "react/jsx-boolean-value": 0
+  }
+}

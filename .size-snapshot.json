@@ -1,0 +1,50 @@
+{
+  "cjs/react-router-pause.js": {
+    "bundled": 114119,
+    "minified": 36218,
+    "gzipped": 11236
+  },
+  "cjs/react-router-pause.min.js": {
+    "bundled": 114119,
+    "minified": 36218,
+    "gzipped": 11236
+  },
+  "umd/react-router-pause.js": {
+    "bundled": 121897,
+    "minified": 20779,
+    "gzipped": 7866
+  },
+  "umd/react-router-pause.min.js": {
+    "bundled": 20779,
+    "minified": 19768,
+    "gzipped": 7391
+  },
+  "esm/react-router-pause.js": {
+    "bundled": 113928,
+    "minified": 36070,
+    "gzipped": 11191,
+    "treeshaked": {
+      "rollup": {
+        "code": 19289,
+        "import_statements": 93
+      },
+      "webpack": {
+        "code": 21498
+      }
+    }
+  },
+  "esm/index.js": {
+    "bundled": 113928,
+    "minified": 36070,
+    "gzipped": 11191,
+    "treeshaked": {
+      "rollup": {
+        "code": 19289,
+        "import_statements": 93
+      },
+      "webpack": {
+        "code": 21498
+      }
+    }
+  }
+}

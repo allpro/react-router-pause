@@ -56,8 +56,8 @@ However this is clumsy and allows only a single, global configuration.
 -   NPM: `npm install @allpro/react-router-pause`
 -   Yarn: `yarn add @allpro/react-router-pause`
 -   CDN: Exposed global is `ReactRouterPause`
-    -   Unpkg: `<script src="https://unpkg.com/@allpro/react-router-pause/dist/umd/@allpro/react-router-pause.min.js"></script>`
-    -   JSDelivr: `<script src="https://cdn.jsdelivr.net/npm/@allpro/react-router-pause/dist/umd/@allpro/react-router-pause.min.js"></script>`
+    -   Unpkg: `<script src="https://unpkg.com/@allpro/react-router-pause/umd/react-router-pause.min.js"></script>`
+    -   JSDelivr: `<script src="https://cdn.jsdelivr.net/npm/@allpro/react-router-pause/umd/react-router-pause.min.js"></script>`
 
 
 ## Usage
@@ -364,9 +364,10 @@ see the tags on this repository.
 
 ## License
 
-This project is licensed under the MIT License - see the 
-[LICENSE.md](https://github.com/allpro/react-router-pause/blob/master/LICENSE)
- file for details
+MIT © [allpro](https://github.com/allpro)
+<br>See
+[LICENSE](https://github.com/allpro/react-router-pause/blob/master/LICENSE)
+file for details
 
 
 [gzip-size-badge]: http://img.badgesize.io/https://cdn.jsdelivr.net/npm/@allpro/react-router-pause/umd/@allpro/react-router-pause.min.js?compression=gzip

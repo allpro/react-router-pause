@@ -1,17 +1,16 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from 'react-testing-library'
-/* Methods
-import {
-	render,
-	fireEvent,
-	cleanup,
-	wait,
-	waitForElement,
-} from 'react-testing-library'
-*/
 import assign from 'lodash/assign'
-// import clone from 'lodash/clone'
+
+import 'jest-dom/extend-expect'
+import 'react-testing-library/cleanup-after-each'
+import {
+	render
+	// fireEvent,
+	// cleanup,
+	// wait,
+	// waitForElement,
+} from 'react-testing-library'
 
 import ReactRouterPause from '../'
 
@@ -35,10 +34,10 @@ const location = {
 }
 
 const Component = props => (
-	<MemoryRouter initialEntries={[ '/' ]}>
+	<MemoryRouter initialEntries={[ location.pathname ]}>
 		<ReactRouterPause
 			history={history}
-			location={assign({}, location, propt.pathname)}
+			location={assign({}, location)}
 			{...props}
 		/>
 	</MemoryRouter>
@@ -65,20 +64,21 @@ test('renders without crashing', () => {
 
 test('binds history.block handler onMount', () => {
 	render(<Component use={handler} />)
+	expect(history.block).toHaveBeenCalledTimes(1)
 })
 
 test('unbinds history.block handler onUnmount', () => {
 	const { unmount } = render(<Component use={handler} />)
 	unmount()
-	console.log({ history })
-	expect(unblockMock.toHaveBeenCalledTimes(1))
+	expect(unblockMock).toHaveBeenCalledTimes(1)
+	// console.warn({ history })
 })
 
 test('calls the navigation handler onRouteChange', () => {
 	const { debug, rerender } = render(<Component use={handler} />)
-	debug()
-	expect(handler.toBeCalledTimes(1))
-	// expect(handler.toBeCalledWith([]))
-	rerender(<Component use={handler} pathname={'/next'} />)
-	expect(handler.toHaveBeenCalledTimes(1))
+	debug() // Output DOM markup at END of test output
+	expect(handler).toBeCalledTimes(1)
+	// expect(handler).toBeCalledWith([])
+	// rerender(<Component use={handler} pathname={'/next'} />)
+	// expect(handler).toHaveBeenCalledTimes(1)
 })

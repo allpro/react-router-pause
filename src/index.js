@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom' // eslint-disable-line
 import PropTypes from 'prop-types'
 
 import bindAll from 'lodash/bindAll'
@@ -141,7 +141,7 @@ class ReactRouterPause extends React.Component {
 			history.goBack()
 		}
 		else { // (push|replace)
-			history[action](location)
+			history[action](location.pathname, location.state)
 		}
 	}
 
@@ -222,23 +222,20 @@ class ReactRouterPause extends React.Component {
 	 * @param {string} action        One of [PUSH|REPLACE|POP]
 	 */
 	beforeRouteChange(location, action) {
-		console.log({ location, action })
-
-		// Cache the new location data for comparison
-		const prevFingerprint = this.locationFingerprint
-		this.locationFingerprint = createFingerprint(location)
+		// Create new location fingerprint for comparison
+		const newFingerprint = createFingerprint(location)
 
 		if (this.props.when === false) {
-			return true // Allow - RRP is disabled!
+			// Allow this event - RRP is disabled!
 		}
-		else if (this.locationFingerprint === prevFingerprint) {
+		else if (newFingerprint === this.locationFingerprint) {
 			// Block navigation if this is SAME LOCATION we are already at!
 			// This prevents reloading a form component and losing its contents.
 			return false
 		}
 		else if (this.skipNext) {
 			this.setSkipNext(false) // Reset flag - only used ONCE
-			return true // Allow this event
+			// Allow this event - blocking was skipped!
 		}
 		else if (this.isBlocking()) {
 			// The askHandler method handles the pause/resume functionality.
@@ -246,9 +243,10 @@ class ReactRouterPause extends React.Component {
 			// Coerce response to a boolean because that's what RR expects.
 			return !!this.askHandler({ location, action })
 		}
-		else {
-			return true
-		}
+
+		// Cache the new location data for comparison
+		this.locationFingerprint = newFingerprint
+		return true
 	}
 
 

@@ -9,7 +9,8 @@ import TextField from '@material-ui/core/TextField'
 
 import { useFormManager } from '@allpro/form-manager'
 
-import Pause from './react-router-pause'
+import Pause from 'react-router-pause'
+
 import PromptDialog from './PromptDialog'
 import Notification from './Notification'
 

@@ -1,25 +1,32 @@
 {
   "name": "react-router-pause",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Helper for React Router to provide customizable asynchronous navigation blocking",
   "author": "allpro",
   "repository": "allpro/react-router-pause",
   "license": "MIT",
-  "main": "dist/cjs/react-router-pause.js",
-  "module": "dist/esm/react-router-pause.js",
-  "jsnext:main": "dist/esm/react-router-pause.js",
-  "react-native": "dist/umd/react-router-pause.js",
-  "umd:main": "dist/umd/react-router-pause.js",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "jsnext:main": "esm/index.js",
+  "react-native": "umd/react-router-pause.js",
+  "umd:main": "umd/react-router-pause.js",
   "files": [
-    "src",
-    "dist"
+    "cjs",
+    "esm",
+    "umd"
   ],
   "engines": {
     "node": ">=8",
     "npm": ">=5"
   },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "scripts": {
-    "test": "cross-env CI=1 react-scripts test",
+    "test": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "build": "rollup -c",
     "start": "rollup -c -w",
@@ -28,25 +35,22 @@
     "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
-    "prop-types": "^15.5.4",
+    "prop-types": ">=15.0.0",
     "react": "^15.0.0 || ^16.0.0",
     "react-dom": "^15.0.0 || ^16.0.0",
     "react-router": "^4.0.0 || ^5.0.0",
     "react-router-dom": "^4.0.0 || ^5.0.0"
   },
   "devDependencies": {
-    "@allpro/form-manager": "^0.4.2",
-    "@material-ui/core": "^3.9.0",
-    "@material-ui/icons": "^3.0.0",
-    "@svgr/rollup": "^4.2.0",
+    "@svgr/rollup": "^2.4.1",
     "babel-core": "^6.26.3",
-    "babel-eslint": "^9.0.0",
+    "babel-eslint": "^8.2.5",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "classnames": "^2.2.6",
     "cross-env": "^5.1.4",
+    "eslint": "^5.0.1",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.0",
@@ -57,8 +61,7 @@
     "lodash": "^4.0.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "^2.1.8",
+    "react-scripts": "^1.1.4",
     "react-testing-library": "^6.1.2",
     "rollup": "^1.10.0",
     "rollup-plugin-babel": "^3.0.7",
@@ -66,9 +69,11 @@
     "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-postcss": "^2.0.3",
-    "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-size-snapshot": "^0.8.0",
     "rollup-plugin-terser": "^4.0.4",
     "rollup-plugin-url": "^2.2.1"
+  },
+  "dependencies": {
+    "react-router-dom": "^5.0.0"
   }
 }

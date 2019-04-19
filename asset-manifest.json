@@ -1,11 +1,4 @@
 {
-  "main.js": "/react-router-pause/static/js/main.58c0daef.chunk.js",
-  "main.js.map": "/react-router-pause/static/js/main.58c0daef.chunk.js.map",
-  "runtime~main.js": "/react-router-pause/static/js/runtime~main.92943552.js",
-  "runtime~main.js.map": "/react-router-pause/static/js/runtime~main.92943552.js.map",
-  "static/js/2.4e3bc527.chunk.js": "/react-router-pause/static/js/2.4e3bc527.chunk.js",
-  "static/js/2.4e3bc527.chunk.js.map": "/react-router-pause/static/js/2.4e3bc527.chunk.js.map",
-  "index.html": "/react-router-pause/index.html",
-  "precache-manifest.ba265dafa231fbe978dd5475b757d7be.js": "/react-router-pause/precache-manifest.ba265dafa231fbe978dd5475b757d7be.js",
-  "service-worker.js": "/react-router-pause/service-worker.js"
+  "main.js": "static/js/main.f11c4d4a.js",
+  "main.js.map": "static/js/main.f11c4d4a.js.map"
 }

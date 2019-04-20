@@ -16,8 +16,6 @@ router navigation events triggered by the user.
 For example, if a user clicks a link while in the middle of a process,
 and they will _lose data_ if navigation continues.
 
-This Readme is also at: https://allpro.github.io/react-router-pause
-
 **RRP is _similar to:_**
 - the React Router 
 [Prompt](https://reacttraining.com/react-router/web/api/Prompt) component,

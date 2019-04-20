@@ -11,7 +11,7 @@ import Switch from '@material-ui/core/Switch/index'
 
 import { useFormManager } from '@allpro/form-manager'
 
-import ReactRouterPause from 'react-router-pause'
+import ReactRouterPause from '../react-router-pause'
 
 import FormDescription from './FormDescription'
 import Bookmarks from './Bookmarks'

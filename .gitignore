@@ -6,11 +6,12 @@ node_modules
 
 # builds
 build
-dist
+cjs
+esm
+umd
 .rpt2_cache
 
 # misc
-.DS_Store
 .env
 .env.local
 .env.development.local

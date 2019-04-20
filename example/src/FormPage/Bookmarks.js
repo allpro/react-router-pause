@@ -45,7 +45,7 @@ function Bookmarks() {
 					variant="contained"
 					color="primary"
 					component={Link}
-					to="/"
+					to="/#top"
 				>
 					Back to top
 				</Button>
@@ -63,7 +63,7 @@ function Bookmarks() {
 					variant="contained"
 					color="primary"
 					component={Link}
-					to="/"
+					to="/#top"
 				>
 					Back to top
 				</Button>

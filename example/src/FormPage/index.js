@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField/index'
 import FormGroup from '@material-ui/core/FormGroup/index'
 import FormControlLabel from '@material-ui/core/FormControlLabel/index'
 import Switch from '@material-ui/core/Switch/index'
+import Divider from '@material-ui/core/Divider'
 
 import { useFormManager } from '@allpro/form-manager'
 
@@ -165,6 +166,7 @@ function FormPage(props) {
 				label="Username"
 				{...form.allProps('username')}
 				fullWidth={true}
+				style={{ maxWidth: '300px', display: 'block' }}
 				margin="dense"
 				FormHelperTextProps={{ classes }}
 			/>
@@ -173,6 +175,7 @@ function FormPage(props) {
 				label="Password"
 				{...form.allProps('password')}
 				fullWidth={true}
+				style={{ maxWidth: '300px', display: 'block' }}
 				margin="dense"
 				FormHelperTextProps={{ classes }}
 			/>
@@ -197,6 +200,8 @@ function FormPage(props) {
 					Submit
 				</Button>
 			</div>
+
+			<Divider />
 
 			<div style={divBlockStyles}>
 				<FormGroup row>
@@ -224,7 +229,7 @@ function FormPage(props) {
 								}}
 							/>
 						}
-						label="config.allowBookmarks (true = do-not-block)"
+						label="props.config.allowBookmarks (false = block bookmarks too)"
 					/>
 				</FormGroup>
 			</div>

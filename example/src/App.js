@@ -189,7 +189,7 @@ class ReactRouterPauseDemo extends React.Component {
 						</IconButton>
 
 						<Typography variant="h6" color="inherit" noWrap>
-							React-Router-Pause Demo
+							React-Router-Pause Example
 						</Typography>
 					</Toolbar>
 				</AppBar>
@@ -222,7 +222,7 @@ class ReactRouterPauseDemo extends React.Component {
 					</Hidden>
 				</nav>
 
-				<main className={classes.content}>
+				<main id="top" className={classes.content}>
 					<div className={classes.toolbar} />
 					<Routes />
 				</main>

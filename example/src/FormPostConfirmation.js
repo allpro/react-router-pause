@@ -8,7 +8,7 @@ function PagePost(props) {
 	return (
 		<section>
 			<Typography variant="title">
-				Form Submitted Successfully
+				Form Was Submitted Successfully
 			</Typography>
 
 			<Button

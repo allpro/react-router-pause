@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Slide from '@material-ui/core/Slide'
-import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button/index'
+import Dialog from '@material-ui/core/Dialog/index'
+import DialogActions from '@material-ui/core/DialogActions/index'
+import DialogContent from '@material-ui/core/DialogContent/index'
+import DialogContentText from '@material-ui/core/DialogContentText/index'
+import DialogTitle from '@material-ui/core/DialogTitle/index'
+import Slide from '@material-ui/core/Slide/index'
+import Typography from '@material-ui/core/Typography/index'
 
 
 function Transition( props ) {
@@ -37,16 +37,28 @@ function PromptDialog(props) {
 			</DialogContent>
 
 			<DialogActions>
-				<Button onClick={props.cancel} color="primary">
-					Login
+				<Button
+					onClick={props.cancel}
+					variant="contained"
+					color="primary"
+				>
+					Cancel Navigation
 				</Button>
 
-				<Button onClick={props.resume} color="primary">
-					Leave
+				<Button
+					onClick={props.resume}
+					variant="contained"
+					color="secondary"
+				>
+					Resume Navigation
 				</Button>
 
-				<Button onClick={props.redirect} color="primary">
-					{"Go to Page 4"}
+				<Button
+					onClick={props.redirect}
+					variant="contained"
+					color="secondary"
+				>
+					Go to Page 4
 				</Button>
 			</DialogActions>
 		</Dialog>

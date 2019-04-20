@@ -4,9 +4,11 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from './App'
 
+const isDocSite = /allpro\.github\.io/.test(window.location.hostname)
+
 function ReactRouterPauseDemo() {
 	return (
-		<Router>
+		<Router basename={isDocSite ? '/react-router-pause' : ''}>
 			<App />
 		</Router>
 	)

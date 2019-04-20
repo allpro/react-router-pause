@@ -17,7 +17,10 @@
   },
   "globals": {
     "__DEV__": true,
-    "console": true
+    "window": true,
+    "document": true,
+    "console": true,
+    "setTimeout": true
   },
   "extends": [
     // https://github.com/eslint/eslint/blob/master/conf/eslint-recommended.js

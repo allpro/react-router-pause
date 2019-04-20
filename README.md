@@ -16,6 +16,8 @@ router navigation events triggered by the user.
 For example, if a user clicks a link while in the middle of a process,
 and they will _lose data_ if navigation continues.
 
+This Readme is also at: https://allpro.github.io/react-router-pause
+
 **RRP is _similar to:_**
 - the React Router 
 [Prompt](https://reacttraining.com/react-router/web/api/Prompt) component,
@@ -30,13 +32,13 @@ option.
 
 The standard React Router
 [Prompt component](https://reacttraining.com/react-router/web/api/Prompt) 
-is synchronous by default, so can display ONLY very basic `prompt()` messages. 
-The same applies when using 
+is synchronous by default, so can display ONLY `window.prompt()` 
+messages. The same applies when using 
 [router.history.block](https://github.com/ReactTraining/history#blocking-transitions).
 
-Browser `prompt()` dialogs are relatively **ugly** and cannot be customized.
-They are inconsistent with the attractive dialogs most modern apps use. 
-**The motivation for RRP was it overcome this limitation.**
+The `window.prompt()` dialog is relatively **ugly** and cannot be 
+customized. They are inconsistent with the attractive dialogs most modern 
+apps use. **The motivation for RRP was it overcome this limitation.**
 
 It is _possible_ to have an asychronous dialog by customizing
 [createHistory.getUserConfirmation()](https://github.com/ReactTraining/history/blob/master/README.md#customizing-the-confirm-dialog).
@@ -59,19 +61,54 @@ However this is clumsy and allows only a single, global configuration.
     -   Unpkg: `<script src="https://unpkg.com/@allpro/react-router-pause/umd/react-router-pause.min.js"></script>`
     -   JSDelivr: `<script src="https://cdn.jsdelivr.net/npm/@allpro/react-router-pause/umd/react-router-pause.min.js"></script>`
 
+## Compatibility
+
+RRP is designed for maximum backwards compatibility.
+It's a React class-component that utilizes the `withRouter()` HOC provided
+by React-Router 4+. 
+RRP does not _hack_ the router context or use any non-standard trickery
+that might cause compatibility issues in the future.
+
+#### Peer-Dependencies
+
+RRP will work in **_any project_** using React-Router 4.x _or_ 5.x, 
+which requires React >=15.
+```json
+"peerDependencies": {
+    "prop-types": ">=15",
+    "react": ">=15",
+    "react-dom": ">=15",
+    "react-router-dom": ">=4"
+}
+```
+
+#### React-Hooks Testing Version
+
+There is _also_ a version of RRP using **React-hooks**.
+This is _not exported_ because it requires React 16.8 or higher,
+so is not compatible with older projects.
+This version is in the repo for anyone interested:
+<br>https://github.com/allpro/react-router-pause/blob/master/src/ReactRouterPauseHooks.js
+
+When React-Router is eventually updated to provide React-hooks,
+the RRP hooks-version will be updated to take advantage of this.
+It may become the recommended version for projects using 
+the updated React-Router.
+
 
 ## Usage
 
 RRP is a React component, but does NOT render any output.
 RRP also does NOT display any prompts itself.
-It only provides a way for your code to hook into, and control the router.
+It only provides a way for your code to hook into and control the router.
 
-The RRP component accepts only two props (`when` is optional):
+The RRP component accepts 3 props, but only `handler` is required:
 
 ```javascript
 <ReactRouterPause 
-    use={handleNavigationAttempt}
-    when={isFormDirty}
+    handler={ handleNavigationAttempt }
+    when={ isFormDirty }
+    config={{ allowBookmarks: false }}
 />
 ```
 
@@ -93,55 +130,66 @@ function handleNavigationAttempt( navigation, location, action ) {
 
 ### Properties
 
-The RRP component accepts two props:
+The RRP component accepts 3 props:
 
-- #### `use` `{function} [null]` _required_
+- #### `handler` `{function} [null]` _optional_
 
   Called each time a router navigation event occurs.
-  See 'Event Handler' details below.
+  If a handler is not provided, RRP is disabled.
+  <br>See 'Event Handler' details below.
 
 - #### `when` `{boolean} [true]` _optional_
 
-  Set `when={false}` to disable the RRP component.
+  Set `when={false}` to temporarily disable the RRP component.
   This is an alternative to using conditional rendering.
-  (Identical to Prompt component 'when' prop.)
+
+- #### `config` `{object} [{}]` _optional_
+
+  An configuration object to change RRP logic.
+
+  - #### `config.allowBookmarks` `{boolean} [true]`
+    Should links to bookmarks on the same page _always_ be allowed?
+    <br>If `false`, bookmark links are treated the same as page-links.
 
 
-### Event Handler
+### Event Handler Function
 
-The function set in the `use` prop _handles_ navigation events.
+The function specified in the `handler` prop _handles_ navigation events.
 It is called _each time_ the router is about to change the location (URL).
-Three arguments are passed when the handler is called:
+
+**Three arguments are passed to the handler when it is called:**
 
 - #### `navigation` `{object}`
 
-  The methods in this object provide control of the RRP component.
+  The methods in this object provide control of router navigation.
   <br>See **Methods of 'navigation' Object** below for details.
   
 - #### `location` `{object}`
 
   A React Router 
   [`location`](https://reacttraining.com/react-router/web/api/location)
-  object describing the navigation triggered by the user.
+  object describing the navigation event that was triggered.
   
 - #### `action` `{string}`
 
-  The action that triggered the navigation. 
+  The navigation action-type that triggered the navigation event. 
   <br>One of `PUSH`, `REPLACE`, or `POP` 
   
   
 #### Methods of 'navigation' Object
 
-The `navigation` object passed to the handler function provides 5 methods:
+The `navigation` object passed to the handler function provides these methods:
 
-- **navigation.isPaused()** - Returns `true` or `false` to indicate if any navigation
-     event is currently paused.
-- **navigation.resume()** - Triggers the 'paused' navigation event to run
+- **navigation.isPaused()** - Returns `true` or `false` to indicate if any 
+    navigation event is currently paused.
+- **navigation.pausedLocation()** - Returns the `location` object representing
+     the paused navigation, or `null` if no event is paused.
+- **navigation.resume()** - Triggers the 'paused' navigation event to occur.
 - **navigation.cancel()** - Clears 'paused' navigation so can no longer be resumed.
 - **navigation.push(** path, state **)** - The `router.history.push()` method,
     in case you wish to redirect a user to an alternate location
 - **navigation.replace(** path, state **)** - The `router.history.replace()` method,
-    in case you wish to redirect a user to an alternate location
+    in case you wish to redirect a user to an alternate location.
 
 **NOTE: It is _not necessary_ to call `navigation.clear()`.** 
 <br>Each new navigation event _replaces_ the previous one, 
@@ -150,10 +198,10 @@ clicked by the user.
 Calling `navigation.cancel()` is useful if you use the
 `navigation.isPaused()` method, as 'cancel' makes isPaused = false.
 
-#### Navigation Handler Return Values
+#### Event Handler Function Return Values
 
-When called, the handler set in `use` must return one of 5 values
-to the RRP component. These are:
+When called, the handler set in `handler` must return one of these 5 values
+to the RRP component:
 
 - **`true`** or **`undefined`** - Allow navigation to continue.
 - **`false`** - Cancel the navigation event, permanently.
@@ -172,7 +220,7 @@ function handleNavigationAttempt( navigation, location, action ) {
 }
 ````
 
-This example returns a promise to pause navigation while validating
+The example below returns a promise to pause navigation while validating
 data asynchronously. If the promise **resolves**,
 navigation will resume _unless_ `false` is returned by promise.
 If the promise **rejects**, navigation is cancelled.
@@ -197,24 +245,30 @@ RRP _automatically_ blocks navigation if the new location is the same as the
 current location. This prevents scenarios where React Router _reloads_ a form 
 when the user clicks the same page-link again.
 
-The comparison includes all parts of the location, including any 'state' passed, 
-so it will _not_ block if the new route is not identical in every way.
+The comparison between two locations includes:
+
+- pathname ("https://domain.com/section/page.html")
+- search ("?key=value&otherValues)
+- state ("value" or { foo: 'bar' })
+
+The 'hash' (bookmark) it ignored by default.
+<br>See `config.allowBookmarks` in the **Properties** section above.
 
 
 ## Implementation
 
-A common use is to confirm that a user wishes to 'abort' a process, such as 
-filling out a form. RRP allows a custom dialog (asynchronous) to be used.
- 
-**Below are 2 example implementations using a 'confirmation dialog'.**
-The dialog is not important - it's just a _sample_ of how RRP can be used.
+A common requirement in an app is to _ask_ a user if they wants to 'abort' a 
+process, (such as filling out a form), when they click a navigation link. 
+
+**Below are 2 examples using a custom 'confirmation dialog'**, 
+showing different ways to integrate RRP with your code.
 
 ### Functional Component Example
 
 This example keeps all code _inside_ the handler function,
 where it has access to the `navigation` methods. 
 The [`setState` hook](https://reactjs.org/docs/hooks-state.html) 
-is used to show and pass handlers to a confirmation dialog, (asynchronously).
+is used to store and pass handlers to a confirmation dialog.
 
 ```javascript
 import React, { Fragment } from 'react'
@@ -245,7 +299,7 @@ function myFormComponent( props ) {
     return (
         <Fragment>
              <ReactRouterPause 
-                 use={handleNavigationAttempt}
+                 handler={handleNavigationAttempt}
                  when={form.isDirty()}
              />
         
@@ -262,9 +316,9 @@ function myFormComponent( props ) {
 
 ### Class Component Example
 
-Here the navigation object is assigned as a class property so it is accessible 
-to all other methods of the class.
-An alternative would be to _pass_ the navigation object to subroutines.
+In this example the navigation object is assigned to a property so it is 
+accessible to all every method in the class.
+(Another alternative would be to _pass_ the navigation object to subroutines.)
 
 ```javascript
 import React, { Fragment } from 'react'
@@ -296,8 +350,6 @@ class myFormComponent extends React.Component {
     handleStay() {
         this.closeDialog()
         this.navigation.cancel()
-        // NOTE: It's not necessary to 'cancel' paused navigation
-        // It just deletes the cached location so cannot be accidentally resumed
     }
     
     handleLeave() {
@@ -314,7 +366,7 @@ class myFormComponent extends React.Component {
         return (
             <Fragment>
                 <ReactRouterPause 
-                    use={this.handleNavigationAttempt}
+                    handler={this.handleNavigationAttempt}
                     when={this.form.isDirty()}
                 />
         
@@ -338,10 +390,16 @@ class myFormComponent extends React.Component {
 
 ## Live Demo
 
-If you pull the repo, you can run the demo with `npm start`.
+Try the demo at: https://allpro.github.io/react-router-pause
 
-Or on CodeSandbox at:
-https://codesandbox.io/s/github/allpro/react-router-pause/tree/master/example/src
+Play with the demo at:
+https://codesandbox.io/s/github/allpro/react-router-pause/tree/master/example
+
+If you pull or fork the repo, you can run the demo like this:
+- In the root folder, run `npm start`
+- In a second terminal, in the `/example` folder, run `npm start`
+- The demo will start at http://localhost:3000
+- Changes to the component _or_ the demo will auto-update the browser
 
 
 ## Built With

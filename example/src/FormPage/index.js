@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import { withStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
+import { withStyles } from '@material-ui/core/styles/index'
+import Button from '@material-ui/core/Button/index'
+import TextField from '@material-ui/core/TextField/index'
+import FormGroup from '@material-ui/core/FormGroup/index'
+import FormControlLabel from '@material-ui/core/FormControlLabel/index'
+import Switch from '@material-ui/core/Switch/index'
 
 import { useFormManager } from '@allpro/form-manager'
 
-import Pause from 'react-router-pause'
+import ReactRouterPause from 'react-router-pause'
 
+import FormDescription from './FormDescription'
+import Bookmarks from './Bookmarks'
 import PromptDialog from './PromptDialog'
 import Notification from './Notification'
+import useScrollTo from './useScrollTo'
 
 
 const noop = () => null
@@ -26,6 +31,13 @@ const helperTextStyles = {
 	error: {
 		display: 'block'
 	}
+}
+
+const divBlockStyles = {
+	margin: '20px 0'
+}
+const buttonStyles = {
+	marginRight: '20px'
 }
 
 const formConfig = {
@@ -69,10 +81,18 @@ const formConfig = {
 }
 
 
-function Form( props ) {
-	const form = useFormManager(formConfig)
-	const [ dialogProps, setDialogProps ] = useState({})
-	const [ notificationProps, setNotificationProps ] = useState({})
+function FormPage(props) {
+	const [dialogProps, setDialogProps] = useState({})
+	const [notificationProps, setNotificationProps] = useState({})
+	const [allowBookmarks, setAllowBookmarks] = useState(true)
+	const [enableBlocking, setEnableBlocking] = useState(true)
+
+	// Set initial form-data so we can 'reset' back to these values
+	const initialData = {
+		username: '',
+		password: ''
+	}
+	const form = useFormManager(formConfig, initialData)
 
 	function submitForm() {
 		return form.validateAll()
@@ -122,31 +142,24 @@ function Form( props ) {
 		return null // PAUSE navigation while we wait for prompt response
 	}
 
+	// Handle bookmark scrolling
+	useScrollTo(props.location.hash)
+
 
 	const { classes } = props
 
 	return (
-		<section>
+		<Fragment>
+			<ReactRouterPause
+				handler={handleNavigationAttempt}
+				when={enableBlocking}
+				config={{ allowBookmarks }}
+			/>
+
 			<PromptDialog {...dialogProps} />
 			<Notification {...notificationProps} />
 
-			<Pause use={handleNavigationAttempt} />
-
-			<Typography variant="title" gutterBottom>
-				Sample Form
-			</Typography>
-			<Typography variant="body1" gutterBottom>
-				If the form is <b>dirty</b>, navigation to other pages
-				is <b>blocked</b>.
-				If the form is <b>clean</b>, navigation is normal.
-			</Typography>
-			<Typography variant="body1" gutterBottom>
-				Clicking <b>Submit</b> will <b>pause navigation</b> while <b>
-				asynchronous validation</b> is performed.
-				If no errors, navigation will resume.
-				If there are errors, a snackbar message appears that
-				explains why navigation was blocked.
-			</Typography>
+			<FormDescription />
 
 			<TextField
 				label="Username"
@@ -164,33 +177,69 @@ function Form( props ) {
 				FormHelperTextProps={{ classes }}
 			/>
 
-			<Button
-				color="primary"
-				variant="contained"
-				onClick={form.reset}
-				style={{ margin: '20px 20px 0 0' }}
-			>
-				Reset
-			</Button>
+			<div style={divBlockStyles}>
+				<Button
+					color="primary"
+					variant="contained"
+					style={buttonStyles}
+					onClick={form.reset}
+				>
+					Reset
+				</Button>
 
-			<Button
-				color="secondary"
-				variant="contained"
-				component={Link}
-				to={{ pathname: '/post', state: 'submit' }}
-				style={{ margin: '20px 0 0 0' }}
-			>
-				Submit
-			</Button>
-		</section>
+				<Button
+					color="secondary"
+					variant="contained"
+					style={buttonStyles}
+					component={Link}
+					to={{ pathname: '/post', state: 'submit' }}
+				>
+					Submit
+				</Button>
+			</div>
+
+			<div style={divBlockStyles}>
+				<FormGroup row>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={enableBlocking}
+								onChange={e => {
+									setEnableBlocking(e.target.checked)
+								}}
+							/>
+						}
+						label="RRP props.when (false = disable)"
+					/>
+				</FormGroup>
+
+				<FormGroup row>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={allowBookmarks}
+								disabled={!enableBlocking}
+								onChange={e => {
+									setAllowBookmarks(e.target.checked)
+								}}
+							/>
+						}
+						label="config.allowBookmarks (true = do-not-block)"
+					/>
+				</FormGroup>
+			</div>
+
+			<Bookmarks />
+
+		</Fragment>
 	)
 }
 
 const { object } = PropTypes
 
-Form.propTypes = {
+FormPage.propTypes = {
 	classes: object.isRequired,
 	history: object.isRequired
 }
 
-export default withStyles(helperTextStyles)(Form)
+export default withStyles(helperTextStyles)(FormPage)

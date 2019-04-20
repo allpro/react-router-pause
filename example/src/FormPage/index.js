@@ -12,7 +12,7 @@ import Divider from '@material-ui/core/Divider'
 
 import { useFormManager } from '@allpro/form-manager'
 
-import ReactRouterPause from '../react-router-pause'
+import ReactRouterPause from '@allpro/react-router-pause'
 
 import FormDescription from './FormDescription'
 import Bookmarks from './Bookmarks'
@@ -214,7 +214,7 @@ function FormPage(props) {
 								}}
 							/>
 						}
-						label="RRP props.when (false = disable)"
+						label="props.when (false = disable all blocking)"
 					/>
 				</FormGroup>
 
@@ -229,7 +229,7 @@ function FormPage(props) {
 								}}
 							/>
 						}
-						label="props.config.allowBookmarks (false = block bookmarks too)"
+						label="props.config.allowBookmarks (false = block bookmarks)"
 					/>
 				</FormGroup>
 			</div>

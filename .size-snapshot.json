@@ -46,5 +46,10 @@
         "code": 30149
       }
     }
+  },
+  "umd/@allpro/react-router-pause.min.js": {
+    "bundled": 29426,
+    "minified": 27934,
+    "gzipped": 9722
   }
 }

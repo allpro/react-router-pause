@@ -58,7 +58,7 @@ function PromptDialog(props) {
 					variant="contained"
 					color="secondary"
 				>
-					Go to Page 4
+					Go to Page&nbsp;4
 				</Button>
 			</DialogActions>
 		</Dialog>

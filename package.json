@@ -1,9 +1,12 @@
 {
-  "name": "react-router-pause",
-  "version": "0.9.3",
+  "name": "@allpro/react-router-pause",
+  "version": "0.9.5",
   "description": "Helper for React Router to provide customizable asynchronous navigation blocking",
-  "repository": "allpro/react-router-pause",
-  "homepage": "https://allpro.github.io/react-router-pause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/allpro/react-router-pause.git"
+  },
+  "homepage": "https://allpro.github.io/",
   "author": "allpro",
   "license": "MIT",
   "main": "cjs/index.js",

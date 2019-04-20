@@ -1,8 +1,8 @@
 {
-  "name": "react-router-pause-example",
-  "version": "0.9.3",
+  "name": "@allpro/react-router-pause-example",
+  "version": "0.9.5",
   "description": "Helper for React Router to provide customizable asynchronous navigation blocking",
-  "repository": "allpro/react-router-pause",
+  "repository": "allpro/react-router-pause/example",
   "homepage": "https://allpro.github.io/react-router-pause",
   "author": "allpro",
   "license": "MIT",
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@allpro/form-manager": "^0.4.2",
+    "@allpro/react-router-pause": "^0.9.4",
     "@material-ui/core": "^3.9.0",
     "@material-ui/icons": "^3.0.0",
     "classnames": "^2.2.6",

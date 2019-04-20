@@ -2,6 +2,9 @@ import React, { Fragment } from 'react'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 
+const Code = props => (
+	<code style={{ fontSize: '1.2rem', color: '#E00' }}>'{props.text}'</code>
+)
 
 function FormDescription() {
 	return (
@@ -10,34 +13,41 @@ function FormDescription() {
 				Integration with a Form
 			</Typography>
 
-			<Typography variant="body1" gutterBottom>
-				<b>If the form is dirty</b> (changed),
-				then navigation to any other &apos;page&apos; is <b>blocked</b>.
-				<br /><b style={{ color: '#C00' }}>
-				Enter some text into the form to activate blocking.</b>
+			<Typography paragraph>
+				<strong>When the form is clean</strong> (empty),
+				all navigation is <b>allowed</b>.
+				<br /><strong>When the form is dirty</strong>,
+				navigation to other &apos;pages&apos;
+				is <strong>blocked</strong>.
+				<br /><strong style={{ color: '#C00' }}>
+				Enter some text in the form to trigger navigation blocking.</strong>
 			</Typography>
 
-			<Typography variant="body1" gutterBottom>
-				Blocking will also apply to &apos;bookmarks&apos; <strong>
-				<em>IF</em> config.allowBookmarks = false</strong>.
-				<br /><b style={{ color: '#C00' }}>
-				Use the switch below to change the `allowBookmarks` option.</b>
+			<Typography paragraph>
+				<strong>If config.allowBookmarks = false</strong>,
+				Bookmark links are also blocked.
+				<br /><strong style={{ color: '#C00' }}>
+				Use the switch below to
+				toggle <Code text="allowBookmarks" /> true/false.</strong>
 			</Typography>
 
-			<Typography variant="body1" gutterBottom>
-				If the form is <b>clean</b> (unchanged),
-				then all navigation is <b>allowed</b>.
+			<Typography paragraph>
+				<strong>If props.when = false</strong>,
+				navigation blocking is disabled.
+				<br /><strong style={{ color: '#C00' }}>
+				Use the switch below to
+				toggle <Code text="when" /> true/false.</strong>
 			</Typography>
 
 			<Divider style={{ margin: '14px 0' }} />
 
-			<Typography variant="body1" gutterBottom>
-				The <b>Submit</b> button is also a link component.
-				<br />Navigation is <b>paused</b> while the form data
-				is <b>asynchronously validated</b>.
-				<br /><b>If no form errors, navigation to the
-				confirmation page is resumed.</b>
-				<br />If there are form errors, a message is displayed.
+			<Typography paragraph>
+				The <strong>Submit</strong> button is also a link.
+				<br />Navigation is <strong>paused</strong> while form data
+				is <strong>asynchronously validated</strong>.
+				<br />If there <em>are</em> validation errors, a message displays.
+				<br /><strong>If no error, navigation to the
+				confirmation page is resumed.</strong>
 			</Typography>
 		</Fragment>
 	)

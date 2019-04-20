@@ -19,7 +19,7 @@ function Bookmarks() {
 					component={Link}
 					to={'/#bookmark1'}
 				>
-					Scroll to Bookmark 1
+					Go to Bookmark 1
 				</Button>
 
 				<Button
@@ -29,7 +29,7 @@ function Bookmarks() {
 					component={Link}
 					to={'/#bookmark2'}
 				>
-					Scroll to Bookmark 2
+					Go to Bookmark 2
 				</Button>
 			</div>
 

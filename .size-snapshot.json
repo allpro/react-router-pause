@@ -1,38 +1,4 @@
 {
-  "cjs/react-router-pause.js": {
-    "bundled": 114119,
-    "minified": 36218,
-    "gzipped": 11236
-  },
-  "cjs/react-router-pause.min.js": {
-    "bundled": 114119,
-    "minified": 36218,
-    "gzipped": 11236
-  },
-  "umd/react-router-pause.js": {
-    "bundled": 121897,
-    "minified": 20779,
-    "gzipped": 7866
-  },
-  "umd/react-router-pause.min.js": {
-    "bundled": 29426,
-    "minified": 27934,
-    "gzipped": 9722
-  },
-  "esm/react-router-pause.js": {
-    "bundled": 113928,
-    "minified": 36070,
-    "gzipped": 11191,
-    "treeshaked": {
-      "rollup": {
-        "code": 19289,
-        "import_statements": 93
-      },
-      "webpack": {
-        "code": 21498
-      }
-    }
-  },
   "esm/index.js": {
     "bundled": 154890,
     "minified": 50880,

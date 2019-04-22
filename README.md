@@ -16,6 +16,9 @@ router navigation events triggered by the user.
 For example, if a user clicks a link while in the middle of a process,
 and they will _lose data_ if navigation continues.
 
+For more detail, see: 
+**[Control React Router, Asynchronously](https://medium.com/@kevin.dalman/control-react-router-asynchronously-b5c0e88013ab)**
+
 **RRP is _similar to:_**
 - the React Router 
 [Prompt](https://reacttraining.com/react-router/web/api/Prompt) component,

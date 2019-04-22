@@ -1,21 +1,21 @@
 {
   "esm/index.js": {
-    "bundled": 154890,
-    "minified": 50880,
-    "gzipped": 14792,
+    "bundled": 154702,
+    "minified": 50857,
+    "gzipped": 14786,
     "treeshaked": {
       "rollup": {
-        "code": 27936,
+        "code": 27990,
         "import_statements": 93
       },
       "webpack": {
-        "code": 30149
+        "code": 30201
       }
     }
   },
   "umd/@allpro/react-router-pause.min.js": {
-    "bundled": 29426,
-    "minified": 27934,
-    "gzipped": 9722
+    "bundled": 29480,
+    "minified": 28004,
+    "gzipped": 9731
   }
 }

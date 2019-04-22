@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider'
 import { useFormManager } from '@allpro/form-manager'
 
 import ReactRouterPause from '@allpro/react-router-pause'
+// import ReactRouterPause from '../ReactRouterPause' // Development
 
 import FormDescription from './FormDescription'
 import Bookmarks from './Bookmarks'
@@ -109,11 +110,11 @@ function FormPage(props) {
 
 		// Check if this is the Submit Link-button
 		if (location.state === 'submit') {
-			submitForm()
-			// If data OK, continue; else form is ALREADY displaying errors
+			// Return a promise to pause navigation until it settles
+			return submitForm()
 			.then(isValid => {
 				if (isValid) {
-					navigation.resume()
+					return true // Same as navigation.resume()
 				}
 				else {
 					setNotificationProps({
@@ -122,25 +123,26 @@ function FormPage(props) {
 							setNotificationProps({})
 						}
 					})
+					return false // Same as navigation.cancel()
 				}
 			})
 		}
-		else if (!form.isDirty()) {
-			// If form is not dirty, then ALLOW navigation
+
+		// If form is not dirty, then ALLOW navigation
+		if (!form.isDirty()) {
 			return true
 		}
-		else {
-			// If not the submit button, then prompt user with options
-			setDialogProps({
-				open: true,
-				cancel: closeThen(navigation.cancel),
-				resume: closeThen(navigation.resume),
-				redirect: closeThen(navigation.push, '/page4'),
-				onClose: closeThen(noop)
-			})
-		}
 
-		return null // PAUSE navigation while we wait for prompt response
+		// If not the submit button, then prompt user with options
+		setDialogProps({
+			open: true,
+			cancel: closeThen(navigation.cancel),
+			resume: closeThen(navigation.resume),
+			redirect: closeThen(navigation.push, '/page4'),
+			onClose: closeThen(noop)
+		})
+		return null // null = PAUSE navigation
+		// navigation.pause() - Can also use method to signal pause
 	}
 
 	// Handle bookmark scrolling

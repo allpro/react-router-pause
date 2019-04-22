@@ -178,6 +178,10 @@ The `navigation` API passed to the handler has these methods:
   <br>Returns the `location` object representing the paused navigation, 
   or `null` if no event is paused.
     
+- **`navigation.pause()`**
+  <br>Pause navigation event - equivalent to returning `null` from the handler.
+  <br>**Note**: This must be called _before_ the handler returns.
+    
 - **`navigation.resume()`**
   <br>Triggers the 'paused' navigation event to occur.
     
@@ -197,7 +201,8 @@ The `navigation` API passed to the handler has these methods:
 
 #### `handler` Function Return Values
 
-When called, the handler must return one of these 5 responses:
+If the handler does NOT call any navigationAPI method is before it returns,
+then it must return one of these responses:
 
 - **`true`** or **`undefined`** - Allow navigation to continue.
 - **`false`** - Cancel the navigation event, permanently.

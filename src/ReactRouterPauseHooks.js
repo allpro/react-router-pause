@@ -30,7 +30,7 @@ function ReactRouterPause(props) {
 	const ignoreNextNavigationEvent = useRef(false)
 
 	// Cache the location data for navigation event that was delayed.
-	const pausedNavigation = useRef(null)
+	const cachedNavigation = useRef(null)
 
 	// Cache for unblock function returned by history.block
 	const historyUnblock = useRef(null)
@@ -124,7 +124,7 @@ function ReactRouterPause(props) {
 	 * @returns {(Object|null)}
 	 */
 	function pausedLocation() {
-		const route = pausedNavigation.current
+		const route = cachedNavigation.current
 		/** @namespace route.location **/
 		return route ? cloneDeep(route.location) : null
 	}
@@ -134,17 +134,17 @@ function ReactRouterPause(props) {
 	 * @returns {boolean}
 	 */
 	function isPaused() {
-		return !!pausedNavigation.current
+		return !!cachedNavigation.current
 	}
 
 
 	/**
-	 * Resume previously pausedNavigation blocked by handler callback.
+	 * Resume previously cachedNavigation blocked by handler callback.
 	 */
 	function resume() {
 		if (!isPaused()) return
 
-		let { location, action } = pausedNavigation.current
+		let { location, action } = cachedNavigation.current
 		action = action.toLowerCase()
 
 		// Avoid blocking the next event
@@ -167,7 +167,7 @@ function ReactRouterPause(props) {
 	 * Clear cached navigation/location data so cannot be used
 	 */
 	function cancel() {
-		pausedNavigation.current = null
+		cachedNavigation.current = null
 	}
 
 	/**
@@ -226,7 +226,7 @@ function ReactRouterPause(props) {
 		// A Promise OR Null response means pause/delay navigation
 		if (isPromiseResp || isNull(resp)) {
 			// Cache route info so can resume route later
-			pausedNavigation.current = { location, action }
+			cachedNavigation.current = { location, action }
 
 			// Promise will resume navigation if resolved; cancel if rejected
 			if (isPromiseResp) {

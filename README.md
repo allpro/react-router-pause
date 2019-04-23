@@ -255,7 +255,7 @@ The comparison between two locations includes:
 - search ("?key=value&otherValues")
 - state ("value" or { foo: 'bar' })
 
-The location 'hash' (bookmark) it ignored by default.
+The location 'hash' (bookmark) is ignored by default.
 <br>See `config.allowBookmarks` in the 
 **[Component Properties](#component-properties)** section.
 

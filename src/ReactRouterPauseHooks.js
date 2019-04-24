@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'		// eslint-disable-line
 import PropTypes from 'prop-types'
 
 import cloneDeep from 'lodash/cloneDeep'
-import isBoolean from 'lodash/isBoolean'
 import isFunction from 'lodash/isFunction'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
@@ -62,7 +61,7 @@ function ReactRouterPause(props) {
 			return
 		}
 
-		const current = handler.current
+		const prev = handler.current
 		let next = props.handler
 		// Ensure param is a function
 		if (next && !isFunction(next)) next = null
@@ -70,16 +69,16 @@ function ReactRouterPause(props) {
 		// Allow blocking handler to be changed on each render
 		// MAY TRIGGER ON EVERY RENDER if 'handler' callback is recreated each
 		// time Using a 'named function' will avoid this; see isSameFunction()
-		if (!current && !next) {
+		if (!prev && !next) {
 			// Nothing to do
 		}
-		else if (current && !next) {
+		else if (prev && !next) {
 			unblock()
 		}
-		else if (next && !current) {
+		else if (next && !prev) {
 			block()
 		}
-		else if (!isSameFunction(next, current)) {
+		else if (!isSameFunction(next, prev)) {
 			block()
 		}
 	}
@@ -130,6 +129,13 @@ function ReactRouterPause(props) {
 	}
 
 	/**
+	 * Clear the cached location
+	 */
+	function clearCache() {
+		cachedNavigation.current = null
+	}
+
+	/**
 	 * Is there currently a location cached that we can 'resume'?
 	 * @returns {boolean}
 	 */
@@ -146,6 +152,7 @@ function ReactRouterPause(props) {
 
 		let { location, action } = cachedNavigation.current
 		action = action.toLowerCase()
+		clearCache()
 
 		// Avoid blocking the next event
 		allowNextEvent(true)
@@ -167,7 +174,7 @@ function ReactRouterPause(props) {
 	 * Clear cached navigation/location data so cannot be used
 	 */
 	function cancel() {
-		cachedNavigation.current = null
+		clearCache()
 	}
 
 	/**
@@ -175,6 +182,7 @@ function ReactRouterPause(props) {
 	 * @param {Object} [state]
 	 */
 	function push(pathOrLocation, state) {
+		clearCache()
 		allowNextEvent(true) // Avoid blocking this event
 		history.push(pathOrLocation, state)
 	}
@@ -184,6 +192,7 @@ function ReactRouterPause(props) {
 	 * @param {Object} [state]
 	 */
 	function replace(pathOrLocation, state) {
+		clearCache()
 		allowNextEvent(true) // Avoid blocking this event
 		history.replace(pathOrLocation, state)
 	}
@@ -196,50 +205,69 @@ function ReactRouterPause(props) {
 	 */
 	function askHandler(location, action) {
 		let resp = true
+		let pauseCalled = false
+
+		// Cache route info so can resume route later
+		cachedNavigation.current = { location, action }
+
+		const navigationAPI = {
+			isPaused,		// Returns true or false
+			pausedLocation,	// Returns location-object or null
+			resume,
+			cancel,
+			push,
+			replace
+		}
+		// Add SYNCHRONOUS pause method to API
+		// Allows 'pause' to be set via an API call instead of returning null
+		navigationAPI.pause = () => {
+			pauseCalled = true
+		}
 
 		// Prevent a component-level error from breaking router navigation
 		try {
-			const navigationAPI = {
-				isPaused,		// Returns true or false
-				pausedLocation,	// Returns location-object or null
-				resume,
-				cancel,
-				push,
-				replace
-			}
 			resp = handler.current(navigationAPI, location, action)
 		}
 		catch (err) {} // eslint-disable-line
 
-		// If nothing is returned, let navigation proceed as normal
-		if (isUndefined(resp)) {
-			return true
+		// If pausedLocation is empty, an api method must have been called
+		if (!isPaused()) {
+			return false
 		}
 
-		// A boolean response means allow or cancel - NO paused navigation
-		if (isBoolean(resp)) {
-			return resp
+		// If navigation.pause() was called, THIS TAKES PRECEDENT
+		if (pauseCalled) {
+			resp = null
 		}
 
-		const isPromiseResp = isPromise(resp)
+		// A Null response means pause/delay navigation
+		if (isNull(resp)) {
+			return false
+		}
 
-		// A Promise OR Null response means pause/delay navigation
-		if (isPromiseResp || isNull(resp)) {
-			// Cache route info so can resume route later
-			cachedNavigation.current = { location, action }
-
-			// Promise will resume navigation if resolved; cancel if rejected
-			if (isPromiseResp) {
-				// noinspection JSUnresolvedFunction
-				resp
-				.then(val => {
-					if (val === false) cancel()
-					else resume()
-				})
-				.catch(cancel)
-			}
+		// A Promise response means pause/delay navigation
+		// Promise will resume navigation if resolved; cancel if rejected
+		if (isPromise(resp)) {
+			// noinspection JSUnresolvedFunction,JSObjectNullOrUndefined
+			resp
+			.then(val => {
+				if (val === false) cancel()
+				else resume()
+			})
+			.catch(cancel)
 
 			return false
+		}
+
+
+		// NOT PAUSED, so clear the cached location
+		clearCache()
+
+		if (resp === false) {
+			return false
+		}
+		if (resp === true || isUndefined(resp)) {
+			return true
 		}
 
 		// Log warning if an invalid response received, including undefined
@@ -284,7 +312,7 @@ function ReactRouterPause(props) {
 			const resp = !!askHandler(location, action)
 
 			// There are only 3 responses that block navigation
-			if (resp === false || resp === null || isPromise(resp)) {
+			if (resp === false || isNull(resp) || isPromise(resp)) {
 				return false
 			}
 		}

@@ -252,7 +252,7 @@ class ReactRouterPause extends React.Component {
 		catch (err) {} // eslint-disable-line
 
 		// If pausedLocation is empty, an api method must have been called
-		if (!this.pausedLocation) {
+		if (!this.isPaused()) {
 			return false
 		}
 

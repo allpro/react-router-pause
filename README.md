@@ -191,7 +191,7 @@ The `navigation` API passed to the handler has these methods:
 - **`navigation.cancel()`** - 
   <br>Clears 'paused' navigation so it can no longer be resumed.
   <br>After cancelling, `navigation.isPaused()` will return `false`.
-  <br>NOTE: It is _usually not necessary_ to call `navigation.clear()`. 
+  <br>NOTE: It is _usually not necessary_ to call `navigation.cancel()`. 
     
 - **`navigation.push(`**`path, state`**`)`**
   <br>The `router.history.push()` method;

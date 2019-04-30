@@ -20,10 +20,10 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 
 import Routes from './Routes'
 
-const theme = createMuiTheme({
+const darkTheme = createMuiTheme({
 	palette: {
-		type: 'dark',
-	},
+		type: 'dark'
+	}
 })
 
 const drawerWidth = 200
@@ -121,7 +121,7 @@ function DrawerContents(props) {
 	const { classes } = props;
 
 	return (
-		<MuiThemeProvider theme={theme}>
+		<MuiThemeProvider theme={darkTheme}>
 			<div className={classes.topLeftToolbar}>
 				<Toolbar>
 					<Typography
@@ -137,10 +137,10 @@ function DrawerContents(props) {
 			<Divider />
 
 			<List>
-				<ListNavItem to="/" exact label="Form Page"DrawerContents />
-				<ListNavItem to="/page2" label="Page 2"DrawerContents />
-				<ListNavItem to="/page3" label="Page 3"DrawerContents />
-				<ListNavItem to="/page4" label="Page 4"DrawerContents />
+				<ListNavItem to="/" exact label="Form Page" />
+				<ListNavItem to="/page2" label="Page 2" />
+				<ListNavItem to="/page3" label="Page 3" />
+				<ListNavItem to="/page4" label="Page 4" />
 			</List>
 
 			<Divider />

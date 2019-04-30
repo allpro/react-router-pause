@@ -1,4 +1,4 @@
-import React, { Fragment, createRef } from 'react'
+import React, { createRef } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -15,8 +15,16 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 
 import Routes from './Routes'
+
+const theme = createMuiTheme({
+	palette: {
+		type: 'dark',
+	},
+})
 
 const drawerWidth = 200
 
@@ -37,7 +45,8 @@ const styles = theme => ({
 		}
 	},
 	drawerPaper: {
-		width: drawerWidth
+		width: drawerWidth,
+		backgroundColor: '#24306b'
 	},
 	content: {
 		flexGrow: 1,
@@ -112,7 +121,7 @@ function DrawerContents(props) {
 	const { classes } = props;
 
 	return (
-		<Fragment>
+		<MuiThemeProvider theme={theme}>
 			<div className={classes.topLeftToolbar}>
 				<Toolbar>
 					<Typography
@@ -148,7 +157,7 @@ function DrawerContents(props) {
 					external
 				/>
 			</List>
-		</Fragment>
+		</MuiThemeProvider>
 	)
 }
 

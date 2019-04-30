@@ -434,7 +434,7 @@ file for details
 [coveralls]: https://coveralls.io/github/allpro/react-router-pause?branch=master
 
 [license-badge]: https://badgen.now.sh/badge/license/MIT/blue
-[license]: https://github.com/allpro/form-manager/blob/master/LICENSE
+[license]: https://github.com/allpro/react-router-pause/blob/master/LICENSE
 
 [donate-badge]: https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat-round
 [donate]: https://paypal.me/KevinDalman

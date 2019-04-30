@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/allpro/react-router-pause.git"
   },
-  "homepage": "https://allpro.github.io/",
+  "homepage": "https://allpro.github.io/react-router-pause",
   "author": "allpro",
   "license": "MIT",
   "main": "cjs/index.js",
